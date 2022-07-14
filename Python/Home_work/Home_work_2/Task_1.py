@@ -5,9 +5,6 @@
 # - 67,82 -> 23
 # - 0,56 -> 11
 
-number = float(input('Insert float number: > '))
-number = abs(number)
-
 
 def print_sum_numbers(num):
     sum_numbers = 0
@@ -18,5 +15,8 @@ def print_sum_numbers(num):
         sum_numbers = int(sum_numbers) + int(i)
     print(f'Sum numbers is {sum_numbers}')
 
+
+number = float(input('Insert float number: > '))
+number = abs(number)
 
 print_sum_numbers(number)
