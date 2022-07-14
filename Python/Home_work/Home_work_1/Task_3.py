@@ -7,16 +7,18 @@
 # - x=2; y=4-> 1
 # - x=-34; y=-30 -> 3
 
+def Quarter_Search(x, y):
+    if x > 0 and y > 0:
+        print(f'Point ({x}; {y}) is in 1 quarter')
+    if x < 0 and y > 0:
+        print(f'Point ({x}; {y}) is in 2 quarter')
+    if x < 0 and y < 0:
+        print(f'Point ({x}; {y}) is in 3 quarter')
+    if x > 0 and y < 0:
+        print(f'Point ({x}; {y}) is in 4 quarter')
+    if x == 0 or y == 0:
+        print('Insert numbers other than 0')
+
 x = float(input('Insert coordinates x = '))
 y = float(input('Insert coordinates y = '))
-
-if x > 0 and y > 0:
-    print(f'Point ({x}; {y}) is in 1 quarter')
-if x < 0 and y > 0:
-    print(f'Point ({x}; {y}) is in 2 quarter')
-if x < 0 and y < 0:
-    print(f'Point ({x}; {y}) is in 3 quarter')
-if x > 0 and y < 0:
-    print(f'Point ({x}; {y}) is in 4 quarter')
-if x == 0 or y == 0:
-    print('Insert numbers other than 0')
+Quarter_Search(x, y)
