@@ -13,7 +13,7 @@ package ru.geekbrains;
 
 import java.util.*;
 
-public class Comp implements Comparable<Laptop> {
+public class Laptop implements Comparable<Laptop> {
 
     private String brand;
     private String model;
