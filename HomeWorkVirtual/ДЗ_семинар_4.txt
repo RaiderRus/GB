@@ -1,0 +1,43 @@
+1. Подключить дополнительный репозиторий на выбор: Docker, Nginx, Oracle MySQL. Установить любой пакет из этого репозитория.
+
+raider@raider-VirtualBox:~$ sudo su
+root@raider-VirtualBox:/home/raider# apt update
+root@raider-VirtualBox:/home/raider# apt install -y nginx
+
+2. Установить и удалить deb-пакет с помощью dpkg.
+
+root@raider-VirtualBox:~# wget https://download.virtualbox.org/virtualbox/7.0.4/virtualbox-7.0_7.0.4-154605~Ubuntu~jammy_amd64.deb
+root@raider-VirtualBox:~# ll
+root@raider-VirtualBox:~# dpkg -i virtualbox-7.0_7.0.4-154605~Ubuntu~jammy_amd64.deb
+root@raider-VirtualBox:~# apt -f install
+root@raider-VirtualBox:~# dpkg -l | grep jammy
+root@raider-VirtualBox:~# dpkg -r virtualbox-7.0
+
+3. Установить и удалить snap-пакет. 
+
+root@raider-VirtualBox:~# snap find chromium
+root@raider-VirtualBox:~# snap install chromium
+root@raider-VirtualBox:~# snap list
+root@raider-VirtualBox:~# snap remove chromium
+
+4. Добавить задачу для выполнения каждые 3 минуты (создание директории, запись в файл).
+
+raider@raider-VirtualBox:~# apt install cron
+raider@raider-VirtualBox:~# systemctl enable cron
+raider@raider-VirtualBox:~$ crontab -e
+# Создает и удаляет один файл в домашней директории
+*/3 * * * * touch testfilecron
+*/3 * * * * rm testfilecron
+
+5. * Подключить PPA-репозиторий на выбор. Установить из него пакет. Удалить PPA из системы.
+
+raider@raider-VirtualBox:~$ sudo add-apt-repository ppa:thomas-schiex/blender
+raider@raider-VirtualBox:~$ sudo apt-get install blender
+raider@raider-VirtualBox:~$ sudo add-apt-repository --remove ppa:thomas-schiex/blender
+
+
+
+
+
+
+

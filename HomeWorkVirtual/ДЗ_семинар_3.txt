@@ -1,0 +1,108 @@
+Создать два произвольных файла. Первому присвоить права на чтение и запись для владельца и группы, только на чтение — для всех. Второму присвоить права на чтение и запись только для владельца. Сделать это в численном и символьном виде.
+Назначить новых владельца и группу для директории целиком.
+
+raider@raider-VirtualBox:~/task3$ touch fl1 fl2 fl1_1 fl2_2;
+raider@raider-VirtualBox:~/task3$ chmod ug=rw,o=r fl1;
+raider@raider-VirtualBox:~/task3$ chmod u=rw,go= fl2;
+raider@raider-VirtualBox:~/task3$ chmod 664 fl1_1;
+raider@raider-VirtualBox:~/task3$ chmod 600 fl2_2;
+raider@raider-VirtualBox:~/task3$ ls -ila;
+
+Управление пользователями:
+* создать пользователя, используя утилиту useradd и adduser;
+* удалить пользователя, используя утилиту userdel.
+
+raider@raider-VirtualBox:~/task3$ sudo useradd -m -s /bin/bash user1
+[sudo] пароль для raider:
+
+raider@raider-VirtualBox:~/task3$ sudo adduser user2
+Добавляется пользователь «user2» ...
+Добавляется новая группа «user2» (1002) ...
+Добавляется новый пользователь «user2» (1002) в группу «user2» ...
+Создаётся домашний каталог «/home/user2» ...
+Копирование файлов из «/etc/skel» ...
+Новый пароль:
+Введите новое значение или нажмите ENTER для выбора значения по умолчанию
+        Полное имя []:
+        Номер комнаты []:
+        Рабочий телефон []:
+        Домашний телефон []:
+        Другое []:
+Данная информация корректна? [Y/n] y
+raider@raider-VirtualBox:~/task3$ sudo userdel -r user1
+userdel: почтовый ящик user1 (/var/mail/user1) не найден
+
+Управление группами:
+* создать группу с использованием утилит groupadd и addgroup;
+* попрактиковаться в смене групп у пользователей;
+* добавить пользователя в группу, не меняя основной;
+
+raider@raider-VirtualBox:~/task3$ sudo groupadd group1
+raider@raider-VirtualBox:~/task3$ sudo addgroup group2
+Добавляется группа «group2» (GID 1001) ...
+Готово.
+raider@raider-VirtualBox:~/task3$ sudo usermod -aG group1,group2 user1
+
+Создать пользователя с правами суперпользователя. Сделать так, чтобы sudo не требовал пароль для выполнения команд.
+
+raider@raider-VirtualBox:~/task3$ PASSWORD='123456'
+raider@raider-VirtualBox:~/task3$ sudo useradd -c superuser -m -s /bin/bash -G sudo -p $(openssl passwd -1 "${PASSWORD}") superuser
+raider@raider-VirtualBox:~/task3$ sudo usermod -aG sudo superuser
+raider@raider-VirtualBox:~/task3$ sudo passwd superuser
+raider@raider-VirtualBox:~/task3$ su superuser
+Пароль:
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+superuser@raider-VirtualBox:/home/raider/task3$ sudo tail /etc/sudoers
+[sudo] пароль для superuser:
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+
+# See sudoers(5) for more information on "@include" directives:
+
+@includedir /etc/sudoers.d
+superuser@raider-VirtualBox:/home/raider/task3$ su superuser
+Пароль:
+superuser@raider-VirtualBox:/home/raider/task3$ sudo userdel -r user2
+
+Используя дополнительные материалы, выдать одному из созданных пользователей право на выполнение ряда команд, требующих прав суперпользователя (команды выбираем на своё усмотрение).
+
+raider@raider-VirtualBox:~/task3$ sudo sudoedit /etc/sudoers
+sudo: sudoedit doesn't need to be run via sudo
+raider@raider-VirtualBox:~/task3$ sudo tail /etc/sudoers
+raider@raider-VirtualBox:~/task3$ su user1
+Пароль:
+$ sudo useradd user2
+[sudo] пароль для user1:
+user1 отсутствует в файле sudoers. Данное действие будет занесено в журнал.
+
+Создать группу developer и нескольких пользователей, входящих в неё. Создать директорию для совместной работы. Сделать так, чтобы созданные одними пользователями файлы могли изменять другие пользователи этой группы.
+
+raider@raider-VirtualBox:~/task3$ PASSWORD='123456'
+raider@raider-VirtualBox:~/task3$ useradd -c user3 -m -s /bin/bash -G sudo -p $(openssl passwd -1 "${PASSWORD}") user3
+raider@raider-VirtualBox:~/task3$ useradd -c user4 -m -s /bin/bash -G sudo -p $(openssl passwd -1 "${PASSWORD}") user4
+raider@raider-VirtualBox:~/task3$ useradd -c user5 -m -s /bin/bash -G sudo -p $(openssl passwd -1 "${PASSWORD}") user5
+raider@raider-VirtualBox:~/task3$ groupadd userrs
+raider@raider-VirtualBox:~/task3$ adduser user3 userrs
+raider@raider-VirtualBox:~/task3$ adduser user4 userrs
+raider@raider-VirtualBox:~/task3$ adduser user5 userrs
+raider@raider-VirtualBox:~/task3$ mkdir /devops
+raider@raider-VirtualBox:~/task3$ chmod 770 /devops
+raider@raider-VirtualBox:~/task3$ chgrp userrs /devops
+raider@raider-VirtualBox:~/task3$ chmod g+s /devops
+
+Создать директорию, в которой есть несколько файлов. Сделать так, чтобы открыть файлы можно было, только зная имя файла, а через ls список файлов посмотреть было нельзя.
+
+raider@raider-VirtualBox:~/task3$ mkdir test
+raider@raider-VirtualBox:~/task3$ echo "Hide place" > ./test/file1
+raider@raider-VirtualBox:~/task3$ chmod -r test
+raider@raider-VirtualBox:~/task3$ cd test
+raider@raider-VirtualBox:~/task3/test$ ls
+ls: невозможно открыть каталог '.': Отказано в доступе
+raider@raider-VirtualBox:~/task3/test$ cat file1
+Hide place

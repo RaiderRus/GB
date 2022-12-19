@@ -1,0 +1,44 @@
+Используя команду cat, создать два файла с данными, а затем объединить их. Просмотреть содержимое созданного файла. Переименовать файл, дав ему новое имя.
+
+raider@raider-VirtualBox:~/test3$ cat > file1
+hello world
+raider@raider-VirtualBox:~/test3$ cat > file2
+world hello
+raider@raider-VirtualBox:~/test3$ cat file1 file2 > file3
+raider@raider-VirtualBox:~/test3$ cat file3
+raider@raider-VirtualBox:~/test3$ mv file3 file3_new
+
+Создать несколько файлов. Создать директорию, переместить файл туда. Удалить все созданные в этом и предыдущем задании директории и файлы.
+
+raider@raider-VirtualBox:~/test3$ cat > file4
+text file 4
+raider@raider-VirtualBox:~/test3$ cat > file5
+text file 5
+raider@raider-VirtualBox:~/test3$ mv file4 file5 test_files/
+raider@raider-VirtualBox:~/test3$ rm file*
+raider@raider-VirtualBox:~/test3$ rm -r test_files/
+
+Создать файл file1 и наполнить его произвольным содержимым. Скопировать его в file2. Создать символическую ссылку file3 на file1. Создать жесткую ссылку file4 на file1. Посмотреть, какие айноды у файлов. Удалить file1. Что стало с остальными созданными файлами? Попробовать вывести их на экран.
+
+raider@raider-VirtualBox:~/test3$ cat > file1
+text_text_text
+raider@raider-VirtualBox:~/test3$ cp file1 file2
+raider@raider-VirtualBox:~/test3$ ln -s file1 file3
+raider@raider-VirtualBox:~/test3$ ln file1 file4
+raider@raider-VirtualBox:~/test3$ ls –li
+raider@raider-VirtualBox:~/test3$ rm file1
+
+После удаление file1 сломалась ссылка на file3 и его не прочитать.
+file2 работает нормально, так как его просто скопировали.
+file4 работает тоже нормально, так как это была жёсткая ссылка на файл.
+inode file1 и file4 одинаковы.
+
+Дать созданным файлам другие, произвольные имена. Создать новую символическую ссылку. Переместить ссылки в другую директорию.
+
+raider@raider-VirtualBox:~/test3$ mv file2 new_file2
+raider@raider-VirtualBox:~/test3$ mv file3 new_file3
+raider@raider-VirtualBox:~/test3$ mv file4 new_file4
+raider@raider-VirtualBox:~/test3$ ln -s new_file2 new_file5
+raider@raider-VirtualBox:~/test3$ mkdir new_folder
+raider@raider-VirtualBox:~/test3$ mv new_file3 ./new_folder
+raider@raider-VirtualBox:~/test3$ mv new_file5 ./new_folder
