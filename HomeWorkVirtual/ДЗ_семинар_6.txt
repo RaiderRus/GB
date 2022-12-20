@@ -2,21 +2,64 @@
 
 raider@raider-VirtualBox:~$ sudo su
 root@raider-VirtualBox:~# apt install nginx
-root@raider-VirtualBox:/etc/nginx# curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
->     | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+root@raider-VirtualBox:/home/raider# cd /etc/nginx
+root@raider-VirtualBox:/etc/nginx# nano nginx.conf
+root@raider-VirtualBox:/etc/nginx/sites-enabled# nano default
+root@raider-VirtualBox:/etc/nginx# cd sites-available/
+root@raider-VirtualBox:/etc/nginx/sites-available# touch project.local
+root@raider-VirtualBox:/etc/nginx/sites-available# nano project.local
+root@raider-VirtualBox:/etc/nginx/sites-available# cd /etc/nginx/sites-enabled/
+root@raider-VirtualBox:/etc/nginx/sites-enabled# ln -s /etc/nginx/sites-available/project.local
+root@raider-VirtualBox:/etc/nginx/sites-enabled# nginx -t
+root@raider-VirtualBox:/etc/nginx# nano /etc/hosts
 
-
+root@raider-VirtualBox:/etc/nginx# apt install php-fpm
+root@raider-VirtualBox:/etc/nginx# service php8.1-fpm start
+root@raider-VirtualBox:/etc/nginx# cd /etc/php/8.1/fpm/pool.d
+root@raider-VirtualBox:/etc/php/8.1/fpm/pool.d# nano www.conf
+root@raider-VirtualBox:/etc/php/8.1/fpm/pool.d# cd /etc/nginx/sites-enabled/
+root@raider-VirtualBox:/etc/nginx/sites-enabled# nano project.local
+root@raider-VirtualBox:/etc/nginx/sites-enabled# nginx -t
+root@raider-VirtualBox:/etc/nginx/sites-enabled# service nginx reload
+root@raider-VirtualBox:/etc/nginx# cd /var/www/html
+root@raider-VirtualBox:/var/www/html# touch index.php
+root@raider-VirtualBox:/var/www/html# nano index.php
+root@raider-VirtualBox:/etc/nginx/sites-enabled# chmod -R 775 /var/www/html
+root@raider-VirtualBox:/etc/nginx/sites-enabled# chown -R raider:www-data /var/www/html/
+root@raider-VirtualBox:/var/www/html# service nginx reload
 
 2. Установить Apache. Настроить обработку PHP. Добиться одновременной работы с Nginx.
 
+root@raider-VirtualBox:/home/raider# apt install apache2
+root@raider-VirtualBox:/home/raider# sudo apachectl -t
+root@raider-VirtualBox:/home/raider# cd /etc/apache2/
+root@raider-VirtualBox:/etc/apache2# nano ports.conf
+root@raider-VirtualBox:/etc/apache2# sudo apachectl -t
+root@raider-VirtualBox:/etc/apache2# systemctl start apache2
+root@raider-VirtualBox:/etc/apache2# cd sites-enabled/
+root@raider-VirtualBox:/etc/apache2/sites-enabled# nano 000-default.conf
 
 3. Настроить схему обратного прокси для Nginx (динамика - на Apache).
 
+Пробрасываем порты 9080 и 8080
+root@raider-VirtualBox:/home/raider# cd /etc/nginx/sites-enabled/
+root@raider-VirtualBox:/etc/nginx/sites-enabled# nano project.local
 
 4. Установить MySQL. Создать новую базу данных и таблицу в ней.
 
+root@raider-VirtualBox:/home/raider# apt install mysql-server-8.0
+root@raider-VirtualBox:/home/raider# mysql
+mysql> use mysql;
+mysql> CREATE DATABASE gb;
+mysql> CREATE TABLE test_table(i INT);
+mysql> INSERT INTO test_table (i) VALUES (1),(2),(3),(4);
+mysql> SELECT * FROM test_table;
+mysql> exit
 
 ** Установить пакет phpmyadmin и запустить его веб-интерфейс для управления MySQL.
 
+root@raider-VirtualBox:/home/raider# apt -y install php-mbstring
+root@raider-VirtualBox:/home/raider# apt -y install phpmyadmin
+далее переключаем конфиг на apache и заходим на http://localhost:9080/phpmyadmin/ 
 
 ** Настроить схему балансировки трафика между несколькими серверами Apache на стороне Nginx с помощью модуля ngx_http_upstream_module.
